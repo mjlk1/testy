@@ -77,7 +77,7 @@ void F(T* t1,T* t2, int nmax, double gamma, double h)
   	{
   		sa=0;
   		for(int j = -nmax ; j <= nmax ; ++j)
-    	{
+		{
     		for(int k = -nmax ; k <= nmax ; ++k)
         	{
          		for(int l = -nmax ; l <= nmax ; ++l)
