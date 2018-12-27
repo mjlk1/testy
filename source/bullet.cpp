@@ -13,7 +13,7 @@ const Real g = 9.81;
 const Real C = 0.001;
 const Real mass = 1.0;
 const Real n = 2.0;
-const int_fast32_t  dist= 2*sizeof(Real)+3;
+const int_fast32_t  dist = 2*sizeof(Real)+3;
 
 State rhs(const State &r)
 {
