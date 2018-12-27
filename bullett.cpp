@@ -101,9 +101,9 @@ int main()
 	 
 	cout << "time=" << '\n';
 	cin >> time;
-	cout << "Dlugosc kroku h=?"<<'\n';
+	cout << "Dlugosc kroku h=?" << '\n';
 	cin >> h;
-	cout << "Dlugosc kroku do rysowania wykresu hplot=?"<<'\n';
+	cout << "Dlugosc kroku do rysowania wykresu hplot=?" << '\n';
 	cin >> hplot;
 
 	int steps=time/h;
