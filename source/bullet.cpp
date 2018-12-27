@@ -9,11 +9,11 @@ using namespace std;
 typedef float Real;
 typedef vector<Real> State; //wektor stanu (x,y,vx,vy) 
 
-const Real g=9.81;
-const Real C=0.001;
-const Real mass=1;
-const Real n=2;
-const int_fast32_t a=10; //Jesli Real to double, wtedy a=18
+const Real g = 9.81;
+const Real C = 0.001;
+const Real mass = 1.0;
+const Real n = 2.0;
+const int_fast32_t  dist= 2*sizeof(Real)+3;
 
 State rhs(const State &r)
 {
@@ -79,22 +79,22 @@ int main()
 	Real time;
 	int_fast32_t steps, nplot;
 	 
-	cout << "time=" << '\n';
+	cout << "time = ";
 	cin >> time;
-	cout << "Liczba krokow=" << '\n';
+	cout << "Liczba krokow = ";
 	cin >> steps;
-	Real h=time/steps;
+	Real h = time/steps;
 	cout << "Dlugosc kroku wynosi" << '\t' << h << '\n';
-	cout << "nplot=" << '\n';
+	cout << "nplot = ";
 	cin >> nplot;
 
 	State r(4);
 	r[0] = 0.0;
 	r[1] = 0.0;
  
- 	cout << "vx=?" << '\n';
+ 	cout << "vx = ";
 	cin >> r[2];
-	cout << "vy=?" << '\n';
+	cout << "vy = ";
 	cin >> r[3];
 
 	vector<State> solution;
@@ -108,9 +108,9 @@ int main()
 
 	for (int_fast32_t i=0;i<=steps;++i)
 	{
-		if (i%nplot == 0)
-			cout << setw(a) << i*h << setw(a) << solution[i][0] << setw(a) << solution[i][1] << setw(a) << solution[i][2] << setw(a) 
-			<< solution[i][3] << '\n';
+		if (i%nplot==0)
+			cout << setw(dist) << i*h << setw(dist) << solution[i][0] << setw(dist) << solution[i][1] << setw(dist) << solution[i][2] 
+			<< setw(dist) << solution[i][3] << '\n';
 	}
 
 	return 0;
