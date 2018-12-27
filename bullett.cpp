@@ -107,7 +107,7 @@ int main()
 	cin>>hplot;
 
 	int steps=100;
-	int kplot=h/hp;
+	int kplot=hplot/h;
 	state r(4);
 	r[0]=0.0;
 	r[1]=0.0;
