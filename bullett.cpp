@@ -106,7 +106,7 @@ int main()
 	cout<<"Dlugosc kroku do rysowania wykresu hplot=?"<<'\n';
 	cin>>hplot;
 
-	int steps=100;
+	int steps=time/h;
 	int kplot=hplot/h;
 	state r(4);
 	r[0]=0.0;
@@ -121,13 +121,13 @@ int main()
 	vector<state> solution;
 	solution.push_back(r);
 
-	for(int i=1;i<steps;++i)
+	for(int i=1;i<=steps;++i)
 	{
 		r=RK4(r,h);
 		solution.push_back(r);
 	}
 
-	for(int i=0;i<steps;i+=kplot)
+	for(int i=0;i<=steps;i+=kplot)
 	{
 		cout<<i*h<<'\t'<<solution[i][0]<<'\t'<<solution[i][1]<<'\t'<<solution[i][2]<<'\t'<<solution[i][3]<<'\n';
 	}
