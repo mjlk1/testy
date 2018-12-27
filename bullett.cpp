@@ -132,4 +132,5 @@ int main()
 		cout << i*h << '\t' << solution[i][0] << '\t' << solution[i][1] << '\t' << solution[i][2] << '\t' << solution[i][3] << '\n';
 	}
 
+return 0;
 }
