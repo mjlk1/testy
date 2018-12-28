@@ -30,8 +30,9 @@ State rhs(const State &r)
 State euler1(const State &r, const Real &h)
 {
 	State sol;
+	State s = rhs(r);
 	for (int_fast32_t i=0;i<4;++i)
-		sol.push_back(r[i]+h*rhs(r)[i]);
+		sol.push_back(r[i]+h*s[i]);
 	return sol;
 }
 
@@ -48,26 +49,30 @@ State rk4(const State &r, const Real &h)
 {
 	State k1, k2, k3, k4, yk1, yk2, yk3, sol;
 
+	State s = rhs(r);
 	for (int_fast32_t i=0;i<4;++i)
-		k1.push_back(h*rhs(r)[i]); //obliczamy k1
+		k1.push_back(h*s[i]); //obliczamy k1
 
 	for (int_fast32_t i=0;i<4;++i)
 		yk1.push_back(r[i]+0.5*k1[i]); //obliczamy yk1
 
+	State sk1 = rhs(yk1);
 	for (int_fast32_t i=0;i<4;++i)
-		k2.push_back(h*rhs(yk1)[i]); //obliczamy k2
+		k2.push_back(h*sk1[i]); //obliczamy k2
 
 	for (int_fast32_t i=0;i<4;++i)
 		yk2.push_back(r[i]+0.5*k2[i]); //obliczamy yk2
 
+	State sk2 = rhs(yk2);
 	for (int_fast32_t i=0;i<4;++i)
-		k3.push_back(h*rhs(yk2)[i]); //obliczamy k3
+		k3.push_back(h*sk2[i]); //obliczamy k3
 
 	for (int_fast32_t i=0;i<4;++i)
 		yk3.push_back(r[i]+k3[i]); //obliczamy yk3
 
+	State sk3 = rhs(yk3);
 	for (int_fast32_t i=0;i<4;++i)
-		k4.push_back(h*rhs(yk3)[i]); //obliczamy k3
+		k4.push_back(h*sk3[i]); //obliczamy k3
 
 	for (int_fast32_t i=0;i<4;++i)
 		sol.push_back(r[i]+(k1[i]+2*k2[i]+2*k3[i]+k4[i])/6); //obliczamy k3
@@ -82,7 +87,7 @@ int main(int argc, const char *argv[])
 	bool verbose = false;
 
 	for (int i=1;i<argc;++i)
-	if(!strcmp(argv[i],"-v"))
+	if (!strcmp(argv[i],"-v"))
 		verbose = true;
 	else
 	{
