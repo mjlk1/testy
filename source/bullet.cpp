@@ -37,8 +37,9 @@ State euler1(const State &r, const Real &h)
 State euler2(const State &r, const Real &h)
 {
 	State sol;
+	State s = rhs(euler1(r,0.5*h));
 	for (int_fast32_t i=0;i<4;++i)
-		sol.push_back(r[i]+h*rhs(euler1(r,0.5*h))[i]);
+		sol.push_back(r[i]+h*s[i]);
 	return sol;
 }
 
