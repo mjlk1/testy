@@ -18,3 +18,14 @@ bin/bullet: $(OBJECTS)
 clean:
 	rm -rRf build
 	rm -f $(ALL)
+
+%.out: %.in bin/bullet
+	@mkdir -p $(@D)
+	bin/bullet < $< > $@
+
+TESTIN=$(shell find -wholename "./data/*.in")
+TESTOUT=$(TESTIN:%.in=%.out)
+
+.PHONY: test
+test: $(TESTOUT)
+
