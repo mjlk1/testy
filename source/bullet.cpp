@@ -3,11 +3,12 @@
 #include <cmath>
 #include <iomanip>
 #include <vector>
+#include <cstring>
 
 using namespace std;
 
 typedef float Real;
-typedef vector<Real> State; //wektor stanu (x,y,vx,vy) 
+typedef vector<Real> State; //wektor stanu (x,y,vx,vy)
 
 const Real g = 9.81;
 const Real C = 0.001;
@@ -46,7 +47,7 @@ State euler2(const State &r, const Real &h)
 State rk4(const State &r, const Real &h)
 {
 	State k1, k2, k3, k4, yk1, yk2, yk3, sol;
-	
+
 	for (int_fast32_t i=0;i<4;++i)
 		k1.push_back(h*rhs(r)[i]); //obliczamy k1
 
@@ -58,7 +59,7 @@ State rk4(const State &r, const Real &h)
 
 	for (int_fast32_t i=0;i<4;++i)
 		yk2.push_back(r[i]+0.5*k2[i]); //obliczamy yk2
-	
+
 	for (int_fast32_t i=0;i<4;++i)
 		k3.push_back(h*rhs(yk2)[i]); //obliczamy k3
 
@@ -74,28 +75,44 @@ State rk4(const State &r, const Real &h)
 	return sol;
 }
 
-
-int main()
+int main(int argc, const char *argv[])
 {
 	Real time;
 	int_fast32_t steps, nplot;
-	 
-	cout << "time = ";
+	bool verbose = false;
+
+	for (int i=1;i<argc;++i)
+	if(!strcmp(argv[i],"-v"))
+		verbose = true;
+	else
+	{
+		cerr << "nieznana opcja `" << argv[i] << "`" << '\n';
+		return 1;
+	}
+
+	if (verbose)
+		cerr << "time = ";
 	cin >> time;
-	cout << "Liczba krokow = ";
+	if (verbose)
+		cerr << "Liczba krokow = ";
 	cin >> steps;
 	Real h = time/steps;
-	cout << "Dlugosc kroku wynosi" << '\t' << h << '\n';
-	cout << "nplot = ";
+	if (verbose)
+	{
+		cerr << "Dlugosc kroku wynosi" << '\t' << h << '\n';
+		cerr << "nplot = ";
+	}
 	cin >> nplot;
 
 	State r(4);
 	r[0] = 0.0;
 	r[1] = 0.0;
- 
- 	cout << "vx = ";
+
+	if (verbose)
+		cerr << "vx = ";
 	cin >> r[2];
-	cout << "vy = ";
+	if (verbose)
+		cerr << "vy = ";
 	cin >> r[3];
 
 	vector<State> solution;
@@ -110,7 +127,7 @@ int main()
 	for (int_fast32_t i=0;i<=steps;++i)
 	{
 		if (i%nplot==0)
-			cout << setw(dist) << i*h << setw(dist) << solution[i][0] << setw(dist) << solution[i][1] << setw(dist) << solution[i][2] 
+			cout << setw(dist) << i*h << setw(dist) << solution[i][0] << setw(dist) << solution[i][1] << setw(dist) << solution[i][2]
 			<< setw(dist) << solution[i][3] << '\n';
 	}
 
