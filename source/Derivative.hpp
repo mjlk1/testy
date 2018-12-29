@@ -1,9 +1,4 @@
-#ifndef RHS_H
-#define RHS_H
-
-#include <cmath>
-#include <vector>
-#include "Parametry.hpp"
-
-State Derivative(const State &r, const Parametry &par);
+#ifndef DERIVATIVE_HPP
+#define DERIVATIVE_HPP
+State derivative(const State &r, const Parameters &par);
 #endif

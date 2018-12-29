@@ -4,8 +4,10 @@
 #include <iomanip>
 #include <vector>
 #include <cstring>
-#include "Parametry.hpp"
-#include "Derivative.hpp"
+
+#include "Parameters.hpp"
+#include "Euler1.hpp"
+#include "Euler2.hpp"
 #include "RungeKutta4.hpp"
 
 using namespace std;
@@ -13,8 +15,8 @@ using namespace std;
 int main(int argc, const char *argv[])
 {
 	Real time;
-	int_fast32_t steps, nplot;
-	Parametry par;
+	int_fast32_t steps, Nplot;
+	Parameters par;
 	bool verbose = false;
 
 	for (int i=1;i<argc;++i)
@@ -32,6 +34,12 @@ int main(int argc, const char *argv[])
 		cerr << "C = ";
 	cin >> par.C;
 	if (verbose)
+		cerr << "mass = ";
+	cin >> par.mass;
+	if (verbose)
+		cerr << "n = ";
+	cin >> par.n;
+	if (verbose)
 		cerr << "time = ";
 	cin >> time;
 	if (verbose)
@@ -41,9 +49,9 @@ int main(int argc, const char *argv[])
 	if (verbose)
 	{
 		cerr << "Dlugosc kroku wynosi" << '\t' << h << '\n';
-		cerr << "nplot = ";
+		cerr << "Nplot = ";
 	}
-	cin >> nplot;
+	cin >> Nplot;
 
 	State r(4);
 	r[0] = 0.0;
@@ -65,14 +73,14 @@ int main(int argc, const char *argv[])
 		solution.push_back(r);
 	}
 
-	if (nplot==0)
+	if (Nplot==0)
 		cout << setw(dist) << time << setw(dist) << solution[steps][0] << setw(dist) << solution[steps][1] << setw(dist) << 
 		solution[steps][2] << setw(dist) << solution[steps][3] << '\n';
 	else
 	{
 		for (int_fast32_t i=0;i<=steps;++i)
 		{
-			if (i%nplot==0)
+			if (i%Nplot==0)
 				cout << setw(dist) << i*h << setw(dist) << solution[i][0] << setw(dist) << solution[i][1] << setw(dist) <<
 				solution[i][2] << setw(dist) << solution[i][3] << '\n';
 		}
