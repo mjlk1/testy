@@ -40,7 +40,7 @@ State rk5(const State &r, const Real &h, const Parameters &par)
 		k5.push_back(h*sk4[i]); //obliczamy k5
 
 	for (int_fast32_t i=0;i<4;++i)
-		yk5.push_back(r[i]+(1631.0/55296.0)*k1[i]+(175.0/512.0)*k2[i]-(575.0/13824.0)*k3[i]+(44275.0/110592.0)*k4[i]+(253.0/4096.0)*k5[i]); //obliczamy yk5
+		yk5.push_back(r[i]+(1631.0/55296.0)*k1[i]+(175.0/512.0)*k2[i]+(575.0/13824.0)*k3[i]+(44275.0/110592.0)*k4[i]+(253.0/4096.0)*k5[i]); //obliczamy yk5
 
 	State sk5 = derivative(yk5,par);
 	for (int_fast32_t i=0;i<4;++i)
