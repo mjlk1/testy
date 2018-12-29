@@ -1,6 +1,7 @@
 #include <cmath>
 
 #include "Parameters.hpp"
+
 State derivative(const State &r, const Parameters &par)
 {
 	State deriv;
