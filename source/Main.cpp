@@ -9,6 +9,7 @@
 #include "Euler1.hpp"
 #include "Euler2.hpp"
 #include "RungeKutta4.hpp"
+#include "RungeKutta5.hpp"
 
 using namespace std;
 
@@ -69,7 +70,7 @@ int main(int argc, const char *argv[])
 
 	for (int_fast32_t i=0;i<steps;++i)
 	{
-		r = rk4(r,h,par);
+		r = rk5(r,h,par);
 		solution.push_back(r);
 	}
 
