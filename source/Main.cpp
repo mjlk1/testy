@@ -65,13 +65,20 @@ int main(int argc, const char *argv[])
 		cerr << "vy = ";
 	cin >> r[3];
 
+	vector<Real> time_vec;
+	time_vec.push_back(0);
 	vector<State> solution;
 	solution.push_back(r);
 
+	Real t = 0;
+
 	for (int_fast32_t i=0;i<steps;++i)
 	{
+		t+=h;
 		r = rk5(r,h,par);
 		solution.push_back(r);
+		time_vec.push_back(t);
+
 	}
 
 	if (Nplot==0)
@@ -82,7 +89,7 @@ int main(int argc, const char *argv[])
 		for (int_fast32_t i=0;i<=steps;++i)
 		{
 			if (i%Nplot==0)
-				cout << setw(dist) << i*h << setw(dist) << solution[i][0] << setw(dist) << solution[i][1] << setw(dist) <<
+				cout << setw(dist) << time_vec[i] << setw(dist) << solution[i][0] << setw(dist) << solution[i][1] << setw(dist) <<
 				solution[i][2] << setw(dist) << solution[i][3] << '\n';
 		}
 	}
