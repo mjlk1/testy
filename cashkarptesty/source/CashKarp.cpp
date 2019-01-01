@@ -53,83 +53,83 @@ State cashkarp(const State &r, Real &h, Real &h_done, const Real &eps, const Par
 	
 	bool h_test = false; 
 	
-		while (!h_test)
+	while (!h_test)
+	{
+		h_test = true;
+
+		s = derivative(r,par);
+		for (int_fast32_t i=0;i<4;++i)
+			k1[i] = h*s[i]; //obliczamy k1
+
+		for (int_fast32_t i=0;i<4;++i)
+			yk1[i] = r[i]+b[2][1]*k1[i]; //obliczamy yk1
+
+		sk1 = derivative(yk1,par);
+		for (int_fast32_t i=0;i<4;++i)
+			k2[i] = h*sk1[i]; //obliczamy k2
+
+		for (int_fast32_t i=0;i<4;++i)
+			yk2[i] = r[i]+b[3][1]*k1[i]+b[3][2]*k2[i]; //obliczamy yk2
+
+		sk2 = derivative(yk2,par);
+		for (int_fast32_t i=0;i<4;++i)
+			k3[i] = h*sk2[i]; //obliczamy k3
+
+		for (int_fast32_t i=0;i<4;++i)
+			yk3[i] = r[i]+b[4][1]*k1[i]+b[4][2]*k2[i]+b[4][3]*k3[i]; //obliczamy yk3
+
+		sk3 = derivative(yk3,par);
+		for (int_fast32_t i=0;i<4;++i)
+			k4[i] = h*sk3[i]; //obliczamy k4
+
+		for (int_fast32_t i=0;i<4;++i)
+			yk4[i] = r[i]+b[5][1]*k1[i]+b[5][2]*k2[i]+b[5][3]*k3[i]+b[5][4]*k4[i]; //obliczamy yk4
+
+		sk4 = derivative(yk4,par);
+		for (int_fast32_t i=0;i<4;++i)
+			k5[i] = h*sk4[i]; //obliczamy k5
+
+		for (int_fast32_t i=0;i<4;++i)
+			yk5[i] = r[i]+b[6][1]*k1[i]+b[6][2]*k2[i]+b[6][3]*k3[i]+b[6][4]*k4[i]+b[6][5]*k5[i]; //obliczamy yk5
+
+		sk5 = derivative(yk5,par);
+		for (int_fast32_t i=0;i<4;++i)
+			k6[i] = h*sk5[i]; //obliczamy k6
+
+		for (int_fast32_t i=0;i<4;++i)
+			error[i] = c2[1]*k1[i]+c2[3]*k3[i]+c2[4]*k4[i]+c2[5]*k5[i]+c2[6]*k6[i]; //obliczamy blad
+
+		for (int_fast32_t i=0;i<4;++i)
+			sol[i] = r[i]+c[1]*k1[i]+c[3]*k3[i]+c[4]*k4[i]+c[6]*k6[i]; //obliczamy wynik
+
+		for (int_fast32_t i=0;i<4;++i)
+			delta_0[i]=eps*(abs(sol[i])+abs(k1[i])); //delta_0 zadaje maksymalny dopuszczalny blad dla kazdej zmiennej
+		
+		for (int_fast32_t i=0;i<4;++i)
 		{
-			h_test = true;
-
-			s = derivative(r,par);
-			for (int_fast32_t i=0;i<4;++i)
-				k1[i] = h*s[i]; //obliczamy k1
-
-			for (int_fast32_t i=0;i<4;++i)
-				yk1[i] = r[i]+b[2][1]*k1[i]; //obliczamy yk1
-
-			sk1 = derivative(yk1,par);
-			for (int_fast32_t i=0;i<4;++i)
-				k2[i] = h*sk1[i]; //obliczamy k2
-
-			for (int_fast32_t i=0;i<4;++i)
-				yk2[i] = r[i]+b[3][1]*k1[i]+b[3][2]*k2[i]; //obliczamy yk2
-
-			sk2 = derivative(yk2,par);
-			for (int_fast32_t i=0;i<4;++i)
-				k3[i] = h*sk2[i]; //obliczamy k3
-
-			for (int_fast32_t i=0;i<4;++i)
-				yk3[i] = r[i]+b[4][1]*k1[i]+b[4][2]*k2[i]+b[4][3]*k3[i]; //obliczamy yk3
-
-			sk3 = derivative(yk3,par);
-			for (int_fast32_t i=0;i<4;++i)
-				k4[i] = h*sk3[i]; //obliczamy k4
-
-			for (int_fast32_t i=0;i<4;++i)
-				yk4[i] = r[i]+b[5][1]*k1[i]+b[5][2]*k2[i]+b[5][3]*k3[i]+b[5][4]*k4[i]; //obliczamy yk4
-
-			sk4 = derivative(yk4,par);
-			for (int_fast32_t i=0;i<4;++i)
-				k5[i] = h*sk4[i]; //obliczamy k5
-
-			for (int_fast32_t i=0;i<4;++i)
-				yk5[i] = r[i]+b[6][1]*k1[i]+b[6][2]*k2[i]+b[6][3]*k3[i]+b[6][4]*k4[i]+b[6][5]*k5[i]; //obliczamy yk5
-
-			sk5 = derivative(yk5,par);
-			for (int_fast32_t i=0;i<4;++i)
-				k6[i] = h*sk5[i]; //obliczamy k6
-
-			for (int_fast32_t i=0;i<4;++i)
-				error[i] = c2[1]*k1[i]+c2[3]*k3[i]+c2[4]*k4[i]+c2[5]*k5[i]+c2[6]*k6[i]; //obliczamy blad
-
-			for (int_fast32_t i=0;i<4;++i)
-				sol[i] = r[i]+c[1]*k1[i]+c[3]*k3[i]+c[4]*k4[i]+c[6]*k6[i]; //obliczamy wynik
-
-			for (int_fast32_t i=0;i<4;++i)
-				delta_0[i]=eps*(abs(sol[i])+abs(k1[i])); //delta_0 zadaje maksymalny dopuszczalny blad dla kazdej zmiennej
+			if (abs(delta_0[i])<abs(error[i]))  // tutaj sprawdzamy, czy znajdzie sie jakas zmienna, ktorej blad jest wiekszy niz chcemy
+				h_test = false;
 		
-			for (int_fast32_t i=0;i<4;++i)
-			{
-				if (abs(delta_0[i])<abs(error[i]))  // tutaj sprawdzamy, czy znajdzie sie jakas zmienna, ktorej blad jest wiekszy niz chcemy
-					h_test = false;
-		
-				error_diff[i] = abs(error[i])-abs(delta_0[i]); // obliczamy roznice miedzy maks dopuszczalnym bledem a tym co jest teraz
-			}
-
-			worst_coord= 0;
-			for (int_fast32_t i=0;i<4;++i)
-			{	
-				if (error_diff[i]>error_diff[worst_coord]) // szukamy zmiennej, ktora obliczylismy z najwiekszym bledem
-					worst_coord = i;
-			}
-
-			if (!h_test)
-				h = 0.95*h*pow(abs(delta_0[worst_coord]/error[worst_coord]), 0.25); // zmniejszamy h, 0.95 to wspolczynnik S
-			else
-			{
-				h_done = h; // taki krok zrobilismy
-				h = 0.95*h*pow(abs(delta_0[worst_coord]/error[worst_coord]), 0.2); // zwiekszamy h
-				return sol;
-
-			}
+			error_diff[i] = abs(error[i])-abs(delta_0[i]); // obliczamy roznice miedzy maks dopuszczalnym bledem a tym co jest teraz
 		}
+
+		worst_coord= 0;
+		for (int_fast32_t i=0;i<4;++i)
+		{	
+			if (error_diff[i]>error_diff[worst_coord]) // szukamy zmiennej, ktora obliczylismy z najwiekszym bledem
+				worst_coord = i;
+		}
+
+		if (!h_test)
+			h = 0.95*h*pow(abs(delta_0[worst_coord]/error[worst_coord]), 0.25); // zmniejszamy h, 0.95 to wspolczynnik S
+		else
+		{
+			h_done = h; // taki krok zrobilismy
+			h = 0.95*h*pow(abs(delta_0[worst_coord]/error[worst_coord]), 0.2); // zwiekszamy h
+			return sol;
+
+		}
+	}
 	
 }
 	

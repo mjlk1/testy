@@ -1,4 +1,5 @@
 /bin
 /build
+cashkarptesty/bin
 *.o
 *.out
