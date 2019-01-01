@@ -12,6 +12,7 @@
 #include "RungeKutta4.hpp"
 #include "RungeKutta5.hpp"
 #include "CashKarp.hpp"
+#include "CashKarp0.hpp"
 
 using namespace std;
 
@@ -83,6 +84,10 @@ int main(int argc, const char *argv[])
 		
 		Real h_done = 0;
 
+		r=cashkarp0(r,h,h_done,eps,par);
+		t += h_done;
+		solution.push_back(r);
+		time_vec.push_back(t);
 		while (t<time)
 		{
 			r = cashkarp(r,h,h_done,eps,par);
@@ -104,7 +109,7 @@ int main(int argc, const char *argv[])
 		cin >> steps;
 		h = time/steps;
 
-		function<State(State, Real, Parameters)> f;
+		function<State(const State &, const Real &, const Parameters &)> f;
 		if (metoda=="euler1")
 			f = euler1;
 		if (metoda=="euler2")
