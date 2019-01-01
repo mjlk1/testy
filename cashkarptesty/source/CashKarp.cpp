@@ -4,7 +4,7 @@
 #include "Parameters.hpp"
 #include "Derivative.hpp"
 
-State cash_karp(const State &r, Real &h_init, const Real eps, const Parameters &par)
+State cashkarp(const State &r, Real &h, Real &h_done, const Real &eps, const Parameters &par)
 {
 	State k1(4), k2(4), k3(4), k4(4), k5(4), k6(4), yk1(4), yk2(4), yk3(4), yk4(4), yk5(4), sol(4), error(4), error_diff(4), delta_0(4);
 	State s, sk1, sk2, sk3, sk4, sk5;
@@ -24,7 +24,7 @@ State cash_karp(const State &r, Real &h_init, const Real eps, const Parameters &
 	b[4][2] = -0.9;
 	b[4][3] = 6.0/5.0;
 
-	b[5][1] = - 11.0/54.0;
+	b[5][1] = -11.0/54.0;
 	b[5][2] = 2.5;
 	b[5][3] = -70.0/27.0;
 	b[5][4] = 35.0/27.0;
@@ -43,17 +43,17 @@ State cash_karp(const State &r, Real &h_init, const Real eps, const Parameters &
 	c[6] = 512.0/1771.0;
 
 	//c2 to wspolczynniki oznaczane jako c_i-c*_i. Sluza do obliczania bledu.
-	c2[1] = c[1] - 2825.0/27648.0;			
-	c2[2] = c[2] - 0.0;
-	c2[3] = c[3] - 18575.0/48384.0;  
-	c2[4] = c[4] - 13525.0/55296.0;
-	c2[5] = c[5] - 277.0/14336.0;
-	c2[6] = c[6] - 0.25;
+	c2[1] = c[1]-2825.0/27648.0;			
+	c2[2] = c[2]-0.0;
+	c2[3] = c[3]-18575.0/48384.0;  
+	c2[4] = c[4]-13525.0/55296.0;
+	c2[5] = c[5]-277.0/14336.0;
+	c2[6] = c[6]-0.25;
 
-	Real h = h_init;
+	
 	bool h_test = false; 
 	
-		while(!h_test)
+		while (!h_test)
 		{
 			h_test = true;
 
@@ -103,28 +103,29 @@ State cash_karp(const State &r, Real &h_init, const Real eps, const Parameters &
 				sol[i] = r[i]+c[1]*k1[i]+c[3]*k3[i]+c[4]*k4[i]+c[6]*k6[i]; //obliczamy wynik
 
 			for (int_fast32_t i=0;i<4;++i)
-				delta_0[i]=eps*(abs(sol[i])+abs(k1[i])); //delta_0 zadaje maksymalny dopuszcalny blad dla kazdej zmiennej
+				delta_0[i]=eps*(abs(sol[i])+abs(k1[i])); //delta_0 zadaje maksymalny dopuszczalny blad dla kazdej zmiennej
 		
 			for (int_fast32_t i=0;i<4;++i)
 			{
 				if (abs(delta_0[i])<abs(error[i]))  // tutaj sprawdzamy, czy znajdzie sie jakas zmienna, ktorej blad jest wiekszy niz chcemy
 					h_test = false;
 		
-				error_diff[i] = abs(error[i])-abs(delta_0[i]); // obliczamy roznice miedzy referencyjnym bledem a tym co jest teraz
+				error_diff[i] = abs(error[i])-abs(delta_0[i]); // obliczamy roznice miedzy maks dopuszczalnym bledem a tym co jest teraz
 			}
 
 			worst_coord= 0;
 			for (int_fast32_t i=0;i<4;++i)
 			{	
 				if (error_diff[i]>error_diff[worst_coord]) // szukamy zmiennej, ktora obliczylismy z najwiekszym bledem
-					worst_coord= i;
+					worst_coord = i;
 			}
 
 			if (!h_test)
 				h = 0.95*h*pow(abs(delta_0[worst_coord]/error[worst_coord]), 0.25); // zmniejszamy h, 0.95 to wspolczynnik S
 			else
 			{
-				h_init = 0.95*h*pow(abs(delta_0[worst_coord]/error[worst_coord]), 0.2); // zwiekszamy h
+				h_done = h; // taki krok zrobilismy
+				h = 0.95*h*pow(abs(delta_0[worst_coord]/error[worst_coord]), 0.2); // zwiekszamy h
 				return sol;
 
 			}

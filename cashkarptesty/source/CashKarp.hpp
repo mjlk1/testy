@@ -3,6 +3,6 @@
 
 #include "Parameters.hpp"
 
-State cash_karp(const State &r, Real &h_init, const Real eps, const Parameters &par);
+State cashkarp(const State &r, Real &h_init, Real &h_done, const Real &eps, const Parameters &par);
 
 #endif

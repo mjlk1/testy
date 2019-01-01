@@ -71,14 +71,21 @@ int main(int argc, const char *argv[])
 	time_vec.push_back(0);
 
 	Real t = 0;
+	Real h_done = 0;
 
 	while (t<time)
 	{
-		t += h;
-		r =cash_karp(r,h,eps,par);
+		r = cashkarp(r,h,h_done,eps,par);
+		t += h_done;
+		if (t>time)
+		{
+			r = rk5(solution.back(),time-time_vec.back(),par);
+			t = time;
+		}
 		solution.push_back(r);
 		time_vec.push_back(t);
 	}
+
 	int_fast32_t steps = solution.size();
 	if (Nplot==0)
 		cout << setw(dist) << time << setw(dist) << solution[steps-1][0] << setw(dist) << solution[steps-1][1] << setw(dist) << 
