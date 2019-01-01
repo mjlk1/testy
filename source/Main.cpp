@@ -104,7 +104,7 @@ int main(int argc, const char *argv[])
 		cin >> steps;
 		h = time/steps;
 
-		function<State(State, Real, Parameters)> f;
+		function<State(const State &, const Real &, const Parameters &)> f;
 		if (metoda=="euler1")
 			f = euler1;
 		if (metoda=="euler2")
