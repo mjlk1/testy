@@ -60,8 +60,8 @@ int main(int argc, const char *argv[])
 		cerr << "time = ";
 	cin >> time;
 	if (verbose)
-			cerr << "Nplot = ";
-		cin >> Nplot;
+		cerr << "Nplot = ";
+	cin >> Nplot;
 
 
 	vector<State> solution;
@@ -104,14 +104,14 @@ int main(int argc, const char *argv[])
 		cin >> steps;
 		h = time/steps;
 
-		std::function<State(State, Real, Parameters)> f;
-		if(metoda == "euler1")
+		function<State(State, Real, Parameters)> f;
+		if (metoda == "euler1")
 			f = euler1;
-		if(metoda == "euler2")
+		if (metoda == "euler2")
 			f = euler2;
-		if(metoda=="rk4")
+		if (metoda=="rk4")
 			f = rk4;
-		if(metoda=="rk5")
+		if (metoda=="rk5")
 			f = rk5;
 
 		for (int_fast32_t i=0;i<steps;++i)
