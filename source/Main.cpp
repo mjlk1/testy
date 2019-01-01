@@ -46,9 +46,6 @@ int main(int argc, const char *argv[])
 		cerr << "C = ";
 	cin >> par.C;
 	if (verbose)
-		cerr << "mass = ";
-	cin >> par.mass;
-	if (verbose)
 		cerr << "n = ";
 	cin >> par.n;
 	if (verbose)
@@ -84,8 +81,13 @@ int main(int argc, const char *argv[])
 
 		Real h_done = 0;
 
-		r=cashkarp0(r,h,h_done,eps,par);
+		r = cashkarp0(r,h,h_done,eps,par);
 		t += h_done;
+		if (t>time)
+			{
+				r = rk5(solution.back(),time,par);
+				t = time;
+			}
 		solution.push_back(r);
 		time_vec.push_back(t);
 		while (t<time)
