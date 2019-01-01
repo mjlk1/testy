@@ -126,10 +126,8 @@ State cashkarp(const State &r, Real &h, Real &h_done, const Real &eps, const Par
 		{
 			h_done = h; // taki krok zrobilismy
 			h = 0.95*h*pow(abs(delta_0[worst_coord]/error[worst_coord]), 0.2); // zwiekszamy h
-			return sol;
-
 		}
 	}
-	
+	return sol;
 }
 	
