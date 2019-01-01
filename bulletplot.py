@@ -24,9 +24,10 @@ for i in range(1,len(sys.argv)):
 	vx = data[:,3]
 	vy = data[:,4]
 	v = np.sqrt(vx**2+vy**2)
-	axXY.plot(x,y,label=sys.argv[i])
-	axTV.plot(t,v,label=sys.argv[i])
+	axXY.plot(x,y,label=sys.argv[i],marker='x')
+	axTV.plot(t,v,label=sys.argv[i],marker='x')
 
 axXY.legend()
 axTV.legend()
 plt.show()
+
