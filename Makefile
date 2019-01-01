@@ -5,7 +5,7 @@ all: $(ALL)
 
 build/%.cpp.o: %.cpp
 	@mkdir -p $(@D)
-	g++ -c $< -o $@
+	g++ -c -std=c++11 $< -o $@
 
 SOURCES=$(shell find -wholename "./source/*.cpp")
 OBJECTS=$(SOURCES:%=build/%.o)
