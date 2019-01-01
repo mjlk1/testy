@@ -105,9 +105,9 @@ int main(int argc, const char *argv[])
 		h = time/steps;
 
 		function<State(State, Real, Parameters)> f;
-		if (metoda == "euler1")
+		if (metoda=="euler1")
 			f = euler1;
-		if (metoda == "euler2")
+		if (metoda=="euler2")
 			f = euler2;
 		if (metoda=="rk4")
 			f = rk4;
@@ -120,11 +120,7 @@ int main(int argc, const char *argv[])
 			r = f(r,h,par);
 			solution.push_back(r);
 			time_vec.push_back(t);
-
 		}
-
-
-
 	}
 
 	int_fast32_t steps = solution.size();
