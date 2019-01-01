@@ -81,7 +81,7 @@ int main(int argc, const char *argv[])
 		if (verbose)
 			cerr << "krok h = ";
 		cin >> h;
-		
+
 		Real h_done = 0;
 
 		r=cashkarp0(r,h,h_done,eps,par);
@@ -112,12 +112,20 @@ int main(int argc, const char *argv[])
 		function<State(const State &, const Real &, const Parameters &)> f;
 		if (metoda=="euler1")
 			f = euler1;
+		else
 		if (metoda=="euler2")
 			f = euler2;
+		else
 		if (metoda=="rk4")
 			f = rk4;
+		else
 		if (metoda=="rk5")
 			f = rk5;
+		else
+		{
+			cerr << "unknown method `" << metoda << "`\n";
+			return 1;
+		}
 
 		for (int_fast32_t i=0;i<steps;++i)
 		{
@@ -130,7 +138,7 @@ int main(int argc, const char *argv[])
 
 	int_fast32_t steps = solution.size();
 	if (Nplot==0)
-		cout << setw(dist) << time << setw(dist) << solution[steps-1][0] << setw(dist) << solution[steps-1][1] << setw(dist) << 
+		cout << setw(dist) << time << setw(dist) << solution[steps-1][0] << setw(dist) << solution[steps-1][1] << setw(dist) <<
 		solution[steps-1][2] << setw(dist) << solution[steps-1][3] << '\n';
 	else
 	{
