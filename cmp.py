@@ -9,6 +9,7 @@ if len(sys.argv)<=2:
 
 refxy = None
 
+testfiles = []
 testxy = []
 
 for i in range(1,len(sys.argv)):
@@ -23,11 +24,18 @@ for i in range(1,len(sys.argv)):
 		refxy = np.array([x[-1],y[-1]])
 	else:
 		testxy.append([x[-1],y[-1]])
+		testfiles.append(sys.argv[i])
 
 testxy = np.array(testxy)
 
 err = testxy-refxy
 err = np.sum(err**2,axis=1)
 
-for x in err:
-	print(x)
+l = 0
+for f in testfiles:
+	l = max(len(f),l)
+
+print(sys.argv[1],"vs ...")
+
+for i in range(len(err)):
+	print(testfiles[i].ljust(l),err[i])

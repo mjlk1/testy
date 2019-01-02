@@ -83,7 +83,7 @@ int main(int argc, const char *argv[])
 
 		r = cashkarp0(r,h,h_done,eps,par);
 		t += h_done;
-		cerr << "h0 = " << h_done << '\n';
+
 		if (t>time)
 		{
 			r = rk5(solution.back(),time,par);
@@ -95,7 +95,7 @@ int main(int argc, const char *argv[])
 		{
 			r = cashkarp(r,h,h_done,eps,par);
 			t += h_done;
-			cerr << "h = " << h_done << '\n';
+
 			if (t>time)
 			{
 				r = rk5(solution.back(),time-time_vec.back(),par);
