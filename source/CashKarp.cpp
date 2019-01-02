@@ -1,6 +1,7 @@
 #include <cinttypes>
 #include <cmath>
 #include <iostream>
+#include <utility>
 
 #include "Parameters.hpp"
 #include "Derivative.hpp"
@@ -102,7 +103,7 @@ State cashkarp(const State &r, Real &h, Real &h_done, const Real &eps, const Par
 	for (int_fast32_t i=0;i<4;++i)
 	{
 		Real x = abs(sol[i])+abs(k1[i]);
-		delta_0[i]=eps*sqrt(x*x+1.0); //delta_0 zadaje maksymalny dopuszczalny blad dla kazdej zmiennej
+		delta_0[i] = eps*sqrt(x*x+1.0); //delta_0 zadaje maksymalny dopuszczalny blad dla kazdej zmiennej
 	}
 
 	for (int_fast32_t i=0;i<4;++i)
@@ -113,24 +114,24 @@ State cashkarp(const State &r, Real &h, Real &h_done, const Real &eps, const Par
 		error_diff[i] = abs(error[i])-abs(delta_0[i]); // obliczamy roznice miedzy maks dopuszczalnym bledem a tym co jest teraz
 	}
 
-	worst_coord= 0;
+	worst_coord = 0;
 	for (int_fast32_t i=0;i<4;++i)
 	{
 		if (error_diff[i]>error_diff[worst_coord]) // szukamy zmiennej, ktora obliczylismy z najwiekszym bledem
 			worst_coord = i;
 	}
 
-	std::cerr << h_test << " " << delta_0[worst_coord] << " " << error[worst_coord] << '\n';
-
 	if (!h_test)
 	{
 		h_done = h; // taki krok zrobilismy
-		h = 0.95*h*pow(abs(delta_0[worst_coord]/error[worst_coord]), 0.25); // zmniejszamy h, 0.95 to wspolczynnik S
+		Real nu = std::max(std::min(pow(abs(error[worst_coord]/delta_0[worst_coord]),0.25),10.0),0.2);
+		h = 0.95*h/nu; // zmniejszamy h, 0.95 to wspolczynnik S
 	}
 	else
 	{
 		h_done = h;
-		h = 0.95*h*pow(abs(delta_0[worst_coord]/error[worst_coord]), 0.2); // zwiekszamy h
+		Real nu = std::max(std::min(pow(abs(error[worst_coord]/delta_0[worst_coord]),0.2),10.0),0.2);
+		h = 0.95*h/nu; // zwiekszamy h
 	}
 	return sol;
 }

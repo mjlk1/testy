@@ -33,7 +33,7 @@ State cashkarp0(const State &r, Real &h, Real &h_done, const Real &eps, const Pa
 	b[6][2] = 175.0/512.0;
 	b[6][3] = 575.0/13824.0;
 	b[6][4] = 44275.0/110592.0;
-	b[6][5] = 253.0/4096.0;	
+	b[6][5] = 253.0/4096.0;
 
 	c[1] = 37.0/378.0;
 	c[2] = 0.0;
@@ -43,16 +43,16 @@ State cashkarp0(const State &r, Real &h, Real &h_done, const Real &eps, const Pa
 	c[6] = 512.0/1771.0;
 
 	//c2 to wspolczynniki oznaczane jako c_i-c*_i. Sluza do obliczania bledu.
-	c2[1] = c[1]-2825.0/27648.0;			
+	c2[1] = c[1]-2825.0/27648.0;
 	c2[2] = c[2]-0.0;
-	c2[3] = c[3]-18575.0/48384.0;  
+	c2[3] = c[3]-18575.0/48384.0;
 	c2[4] = c[4]-13525.0/55296.0;
 	c2[5] = c[5]-277.0/14336.0;
 	c2[6] = c[6]-0.25;
 
-	
-	bool h_test = false; 
-	
+
+	bool h_test = false;
+
 	while (!h_test)
 	{
 		h_test = true;
@@ -104,30 +104,33 @@ State cashkarp0(const State &r, Real &h, Real &h_done, const Real &eps, const Pa
 
 		for (int_fast32_t i=0;i<4;++i)
 			delta_0[i]=eps*(abs(sol[i])+abs(k1[i])); //delta_0 zadaje maksymalny dopuszczalny blad dla kazdej zmiennej
-		
+
 		for (int_fast32_t i=0;i<4;++i)
 		{
 			if (abs(delta_0[i])<abs(error[i]))  // tutaj sprawdzamy, czy znajdzie sie jakas zmienna, ktorej blad jest wiekszy niz chcemy
 				h_test = false;
-		
+
 			error_diff[i] = abs(error[i])-abs(delta_0[i]); // obliczamy roznice miedzy maks dopuszczalnym bledem a tym co jest teraz
 		}
 
 		worst_coord= 0;
 		for (int_fast32_t i=0;i<4;++i)
-		{	
+		{
 			if (error_diff[i]>error_diff[worst_coord]) // szukamy zmiennej, ktora obliczylismy z najwiekszym bledem
 				worst_coord = i;
 		}
 
 		if (!h_test)
-			h = 0.95*h*pow(abs(delta_0[worst_coord]/error[worst_coord]), 0.25); // zmniejszamy h, 0.95 to wspolczynnik S
+		{
+			Real nu = std::max(std::min(pow(abs(error[worst_coord]/delta_0[worst_coord]),0.25),10.0),0.2);
+			h = 0.95*h/nu; // zmniejszamy h, 0.95 to wspolczynnik S
+		}
 		else
 		{
 			h_done = h; // taki krok zrobilismy
-			h = 0.95*h*pow(abs(delta_0[worst_coord]/error[worst_coord]), 0.2); // zwiekszamy h
+			Real nu = std::max(std::min(pow(abs(error[worst_coord]/delta_0[worst_coord]),0.2),10.0),0.2);
+			h = 0.95*h/nu; // zwiekszamy h
 		}
 	}
 	return sol;
 }
-	

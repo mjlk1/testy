@@ -13,6 +13,6 @@ struct Parameters
 	Real g, C, n;
 };
 
-const int_fast32_t  dist = 2*sizeof(Real)+3;
+const int_fast32_t  dist = 2*sizeof(Real)+5;
 
 #endif
