@@ -14,11 +14,6 @@ bin/bullet: $(OBJECTS)
 	@mkdir -p $(@D)
 	g++ $^ -o $@
 
-.PHONY: clean
-clean:
-	rm -rRf build
-	rm -f $(ALL)
-
 %.out: %.in bin/bullet
 	@mkdir -p $(@D)
 	bin/bullet < $< > $@
@@ -29,3 +24,8 @@ TESTOUT=$(TESTIN:%.in=%.out)
 .PHONY: test
 test: $(TESTOUT)
 
+.PHONY: clean
+clean:
+	rm -rRf build
+	rm -f $(ALL)
+	rm -f $(TESTOUT)
