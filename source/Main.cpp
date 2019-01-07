@@ -13,6 +13,7 @@
 #include "RungeKutta5.hpp"
 #include "CashKarp.hpp"
 #include "CashKarp0.hpp"
+#include "Energy.hpp"
 #include "Clock.hpp"
 
 using namespace std;
@@ -26,8 +27,8 @@ int main(int argc, const char *argv[])
 	bool verbose = false;
 
 	State r(4);
-	r[0] = 0.0;
-	r[1] = 0.0;
+	r[0] = 6.0;
+	r[1] = 1.0;
 
 	for (int i=1;i<argc;++i)
 	if (!strcmp(argv[i],"-v"))
@@ -158,14 +159,14 @@ int main(int argc, const char *argv[])
 	int_fast32_t steps = solution.size();
 	if (Nplot==0)
 		cout << setw(dist) << time << setw(dist) << solution[steps-1][0] << setw(dist) << solution[steps-1][1] << setw(dist) <<
-		solution[steps-1][2] << setw(dist) << solution[steps-1][3] << '\n';
+		solution[steps-1][2] << setw(dist) << solution[steps-1][3] << setw(dist) << energy(solution[steps-1],par) << '\n';
 	else
 	{
 		for (int_fast32_t i=0;i<steps;++i)
 		{
 			if (i%Nplot==0)
 				cout << setw(dist) << time_vec[i] << setw(dist) << solution[i][0] << setw(dist) << solution[i][1] << setw(dist) <<
-				solution[i][2] << setw(dist) << solution[i][3] << '\n';
+				solution[i][2] << setw(dist) << solution[i][3] << setw(dist) << energy(solution[i],par) << '\n';
 		}
 	}
 
