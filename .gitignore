@@ -1,6 +1,5 @@
 /bin
 /build
-cashkarptesty/bin
 *.exe
 *.o
 *.out
