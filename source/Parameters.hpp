@@ -4,7 +4,7 @@
 #include <vector>
 #include <cinttypes>
 
-typedef float Real;
+typedef double Real;
 
 typedef std::vector<Real> State; //wektor stanu (x,y,vx,vy)
 

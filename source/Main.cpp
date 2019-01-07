@@ -13,6 +13,7 @@
 #include "RungeKutta5.hpp"
 #include "CashKarp.hpp"
 #include "CashKarp0.hpp"
+#include "Clock.hpp"
 
 using namespace std;
 
@@ -79,7 +80,10 @@ int main(int argc, const char *argv[])
 			cerr << "krok h = ";
 		cin >> h;
 
+		TimeInterval ti;
 		Real h_done = 0;
+
+		beginTimeMeasurement(ti);
 
 		r = cashkarp0(r,h,h_done,eps,par);
 		t += h_done;
@@ -104,6 +108,10 @@ int main(int argc, const char *argv[])
 			solution.push_back(r);
 			time_vec.push_back(t);
 		}
+
+		endTimeMeasurement(ti);
+
+		std::cerr << "done in " << timeIntervalToSeconds(ti) << " seconds\n";
 	}
 	else
 	{
@@ -131,6 +139,9 @@ int main(int argc, const char *argv[])
 			return 1;
 		}
 
+		TimeInterval ti;
+		beginTimeMeasurement(ti);
+
 		for (int_fast32_t i=0;i<steps;++i)
 		{
 			t += h;
@@ -138,6 +149,10 @@ int main(int argc, const char *argv[])
 			solution.push_back(r);
 			time_vec.push_back(t);
 		}
+
+		endTimeMeasurement(ti);
+
+		std::cerr << "done in " << timeIntervalToSeconds(ti) << " seconds\n";
 	}
 
 	int_fast32_t steps = solution.size();
