@@ -27,8 +27,8 @@ int main(int argc, const char *argv[])
 	bool verbose = false;
 
 	State r(4);
-	r[0] = 6.0;
-	r[1] = 1.0;
+	r[0] = 1.0;
+	r[1] = 0.0;
 
 	for (int i=1;i<argc;++i)
 	if (!strcmp(argv[i],"-v"))
@@ -86,7 +86,7 @@ int main(int argc, const char *argv[])
 
 		beginTimeMeasurement(ti);
 
-		r = cashkarp0(r,h,h_done,eps,par);
+		r = cashkarp(r,h,h_done,eps,par);
 		t += h_done;
 
 		if (t>time)
