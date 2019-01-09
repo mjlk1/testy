@@ -5,14 +5,14 @@ all: $(ALL)
 
 build/%.cpp.o: %.cpp
 	@mkdir -p $(@D)
-	g++ -mavx -c -std=c++11 $< -o $@
+	g++ -mavx -c -Ofast -std=c++11 $< -o $@
 
 SOURCES=$(shell find -wholename "./source/*.cpp")
 OBJECTS=$(SOURCES:%=build/%.o)
 
 bin/bullet: $(OBJECTS)
 	@mkdir -p $(@D)
-	g++ $^ -o $@
+	g++ -s -flto $^ -o $@
 
 %.out: %.in bin/bullet
 	@mkdir -p $(@D)
