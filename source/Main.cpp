@@ -69,7 +69,7 @@ int main(int argc, const char *argv[])
 	y[0]=r[0];
 	y[1]=r[1];
 	y[2]=r[2];
-	y[3]=r[3]; 
+	y[3]=r[3];
 
 	vector<State> solution;
 	solution.push_back(r);
@@ -151,25 +151,25 @@ int main(int argc, const char *argv[])
 		TimeInterval ti;
 		beginTimeMeasurement(ti);
 		if (metoda=="rk5AVX")
-			for (int_fast32_t i=0;i<steps;++i)
-			{
-				t += h;
-				y = rk5AVX(y,h,par);
-				r[0] = y[0];
-				r[1] = y[1];
-				r[2] = y[2];
-				r[3] = y[3];
-				solution.push_back(r); 
-				time_vec.push_back(t);
-			}
+		for (int_fast32_t i=0;i<steps;++i)
+		{
+			t += h;
+			y = rk5AVX(y,h,par);
+			r[0] = y[0];
+			r[1] = y[1];
+			r[2] = y[2];
+			r[3] = y[3];
+			solution.push_back(r);
+			time_vec.push_back(t);
+		}
 		else
-			for (int_fast32_t i=0;i<steps;++i)
-			{
-				t += h;
-				r = f(r,h,par);
-				solution.push_back(r);
-				time_vec.push_back(t);
-			}
+		for (int_fast32_t i=0;i<steps;++i)
+		{
+			t += h;
+			r = f(r,h,par);
+			solution.push_back(r);
+			time_vec.push_back(t);
+		}
 
 		endTimeMeasurement(ti);
 

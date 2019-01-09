@@ -28,4 +28,5 @@ test: $(TESTOUT)
 clean:
 	rm -rRf build
 	rm -f $(ALL)
-	rm -f $(TESTOUT)
+	find data/ -name "*.out" -exec rm -f {} \;
+
