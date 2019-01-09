@@ -142,36 +142,66 @@ int main(int argc, const char *argv[])
 		if (metoda=="rk5")
 			f = rk5;
 		else
-		if (metoda!="rk5AVX")
+		if (metoda!="rk5AVX" && metoda!="rk5avx2")
 		{
 			cerr << "unknown method `" << metoda << "`\n";
 			return 1;
 		}
 
 		TimeInterval ti;
-		beginTimeMeasurement(ti);
 		if (metoda=="rk5AVX")
-		for (int_fast32_t i=0;i<steps;++i)
 		{
-			t += h;
-			y = rk5AVX(y,h,par);
-			r[0] = y[0];
-			r[1] = y[1];
-			r[2] = y[2];
-			r[3] = y[3];
-			solution.push_back(r);
-			time_vec.push_back(t);
+			beginTimeMeasurement(ti);
+			for (int_fast32_t i=0;i<steps;++i)
+			{
+				t += h;
+				y = rk5AVX(y,h,par);
+				r[0] = y[0];
+				r[1] = y[1];
+				r[2] = y[2];
+				r[3] = y[3];
+				solution.push_back(r);
+				time_vec.push_back(t);
+			}
+			endTimeMeasurement(ti);
 		}
 		else
-		for (int_fast32_t i=0;i<steps;++i)
+		if (metoda=="rk5avx2")
 		{
-			t += h;
-			r = f(r,h,par);
-			solution.push_back(r);
-			time_vec.push_back(t);
+			StateAVX *pSolution = (StateAVX*)aligned_alloc(sizeof(StateAVX),sizeof(StateAVX)*(steps+1));
+			StateAVX *p = pSolution, *q = pSolution+1, *e = q+steps;
+			*p = y;
+			beginTimeMeasurement(ti);
+			for ( ;q!=e;++p,++q)
+			{
+				*q = rk5AVXInline(*p,h,par);
+			}
+			endTimeMeasurement(ti);
+			p = pSolution+1;
+			for (int_fast32_t i=0;i<steps;++i)
+			{
+				t += h;
+				r[0] = p[i][0];
+				r[1] = p[i][1];
+				r[2] = p[i][2];
+				r[3] = p[i][3];
+				solution.push_back(r);
+				time_vec.push_back(t);
+			}
+			free(pSolution);
 		}
-
-		endTimeMeasurement(ti);
+		else
+		{
+			beginTimeMeasurement(ti);
+			for (int_fast32_t i=0;i<steps;++i)
+			{
+				t += h;
+				r = f(r,h,par);
+				solution.push_back(r);
+				time_vec.push_back(t);
+			}
+			endTimeMeasurement(ti);
+		}
 
 		std::cerr << "done in " << timeIntervalToSeconds(ti) << " seconds\n";
 	}
