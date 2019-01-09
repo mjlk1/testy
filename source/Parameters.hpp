@@ -3,16 +3,20 @@
 
 #include <vector>
 #include <cinttypes>
+#include <immintrin.h>
+#include <stdio.h>
 
 typedef double Real;
 
-typedef std::vector<Real> State; //wektor stanu (x,y,vx,vy)
+typedef std::vector<Real> State;
+
+typedef __m256d StateAVX; 
 
 struct Parameters
 {
 	Real g, C, n;
 };
 
-const int_fast32_t  dist = 2*sizeof(Real)+5;
+const int_fast32_t  dist = 2*sizeof(Real)+3;
 
 #endif

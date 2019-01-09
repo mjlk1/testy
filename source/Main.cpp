@@ -5,6 +5,7 @@
 #include <vector>
 #include <cstring>
 #include <functional>
+#include <immintrin.h>
 
 #include "Parameters.hpp"
 #include "Euler1.hpp"
@@ -15,6 +16,7 @@
 #include "CashKarp0.hpp"
 #include "Energy.hpp"
 #include "Clock.hpp"
+#include "RungeKutta5AVX.hpp"
 
 using namespace std;
 
@@ -63,6 +65,11 @@ int main(int argc, const char *argv[])
 		cerr << "Nplot = ";
 	cin >> Nplot;
 
+	StateAVX y;
+	y[0]=r[0];
+	y[1]=r[1];
+	y[2]=r[2];
+	y[3]=r[3]; 
 
 	vector<State> solution;
 	solution.push_back(r);
@@ -135,6 +142,7 @@ int main(int argc, const char *argv[])
 		if (metoda=="rk5")
 			f = rk5;
 		else
+		if (metoda!="rk5AVX")
 		{
 			cerr << "unknown method `" << metoda << "`\n";
 			return 1;
@@ -142,14 +150,26 @@ int main(int argc, const char *argv[])
 
 		TimeInterval ti;
 		beginTimeMeasurement(ti);
-
-		for (int_fast32_t i=0;i<steps;++i)
-		{
-			t += h;
-			r = f(r,h,par);
-			solution.push_back(r);
-			time_vec.push_back(t);
-		}
+		if (metoda=="rk5AVX")
+			for (int_fast32_t i=0;i<steps;++i)
+			{
+				t += h;
+				y = rk5AVX(y,h,par);
+				r[0] = y[0];
+				r[1] = y[1];
+				r[2] = y[2];
+				r[3] = y[3];
+				solution.push_back(r); 
+				time_vec.push_back(t);
+			}
+		else
+			for (int_fast32_t i=0;i<steps;++i)
+			{
+				t += h;
+				r = f(r,h,par);
+				solution.push_back(r);
+				time_vec.push_back(t);
+			}
 
 		endTimeMeasurement(ti);
 
